@@ -1,12 +1,12 @@
 const API = 'http://localhost:8080';
 
 const issImages = [
-    '/dist/img/1.jpg',
-    '/dist/img/2.jpg',
-    '/dist/img/3.jpg',
-    '/dist/img/4.jpg',
-    '/dist/img/5.jpg',
-    '/dist/img/6.jpg'
+    'dist/img/1.jpg',
+    'dist/img/2.jpg',
+    'dist/img/3.jpg',
+    'dist/img/4.jpg',
+    'dist/img/5.jpg',
+    'dist/img/6.jpg'
 ];
 
 $(function () {
