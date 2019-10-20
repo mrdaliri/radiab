@@ -1,0 +1,29 @@
+#map {
+  height: 350px; }
+
+#chart {
+  width: 100%;
+  height: 265px;
+  position: relative; }
+
+#iss-comparison {
+  position: relative;
+  height: 100%; }
+  #iss-comparison img {
+    height: 100%;
+    object-fit: cover; }
+  #iss-comparison .card-body {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5); }
+
+#conclusion {
+  min-height: 265px;
+  margin-bottom: 0; }
+  #conclusion p {
+    margin-bottom: 0.5em; }
+  #conclusion p.value {
+    font-size: 130%; }
+  #conclusion p.status {
+    font-size: 150%; }

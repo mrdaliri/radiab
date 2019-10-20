@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="dist/css/app.css">
+
+    <title>Radi-AB</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Radi-AB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <form id="map-input">
+                        <select class="custom-select mb-3" id="date-picker">
+                            <option selected>Select date</option>
+                        </select>
+
+                        <legend class="col-form-label"><strong>Available Layers:</strong></legend>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input filter" id="factor-neutron" name="neutron_radiation" checked>
+                            <label class="custom-control-label" for="factor-neutron">Neutron Radiation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input filter" id="factor-cosmic" name="cosmic_radiation" checked>
+                            <label class="custom-control-label" for="factor-cosmic">Cosmic Radiation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input filter" id="factor-terrestrial" name="terrestrial_radiation" checked>
+                            <label class="custom-control-label" for="factor-terrestrial">Terrestrial Radiation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input filter" id="factor-inhalation" name="inhalation_radiation" checked>
+                            <label class="custom-control-label" for="factor-inhalation">Inhalation Radiation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input filter" id="factor-radionuclide" name="radionuclide_radiation" checked>
+                            <label class="custom-control-label" for="factor-radionuclide">Radionuclide Radiation</label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-3 px-1 py-1">
+                Data made available by:
+                <img src="dist/img/csa-logo@2x.png" class="img-fluid mt-2">
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 d-none" id="info">
+        <div class="col-lg-4">
+            <div class="card" id="iss-comparison">
+                <img src="" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">Did you know?</h5>
+                    <p class="card-text">On your selected date, Canadian astronauts in International Space Station were
+                        exposed to <strong class="value"></strong> radiation. <a
+                                href="https://twitter.com/search?q=SavePlanetEarth"><strong>#SavePlanetEarth</strong></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="alert" id="conclusion" role="alert" data-safe="0.274">
+                <p>Total radiation exposure in <strong class="city"></strong> is:</p>
+                <p class="text-center value"><strong class="value"></strong></p>
+                <p>According to effective dose limit per day for the public in Canada (<strong>0.274 mrem</strong>),
+                    your place is:</p>
+                <p class="text-center status"><strong class="status"></strong></p>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div id="chart"></div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-lg-6">
+            <h4 class="mb-3 pt-3">Are you going to do any of these activities?</h4>
+            <form>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input activity" id="activity-flight" data-exposure="2">
+                        <label class="custom-control-label" for="activity-flight">Taking a Cross Canada flight.</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input activity" id="activity-xray" data-exposure="10">
+                        <label class="custom-control-label" for="activity-xray">Going for a chest X-ray.</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input activity" id="activity-ctscan" data-exposure="1000">
+                        <label class="custom-control-label" for="activity-ctscan">Going for an Adult Abdominal CT
+                            Scan.</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input activity" id="activity-hiking" data-exposure="0.230">
+                        <label class="custom-control-label" for="activity-hiking">Hiking above 2000m from sea
+                            level.</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input activity" id="activity-northwest" data-exposure="0.383">
+                        <label class="custom-control-label" for="activity-northwest">Relocating/Living in the Northwest
+                            Canadian Territories.</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-5 offset-md-1">
+            <div class="card" id="notes">
+                <div class="card-body">
+                    <h5 class="mb-3">Notes</h5>
+                    <p class="empty">Fortunately, you are not exposed to other types of radiations.</p>
+                    <p id="note-activity-flight" class="d-none">When you take a cross Canadian flight you're exposed to <strong>2
+                        mrem</strong> of cosmic radiations!</p>
+                    <p id="note-activity-xray" class="d-none">Your lungs are exposed to a <strong>10 mrem</strong> radiation when you
+                        take a chest x-ray.</p>
+                    <p id="note-activity-ctscan" class="d-none">When you take an abdominal CT scan, your stomach is exposed to a
+                        <strong>1000 mrem</strong> radiation.</p>
+                    <p id="note-activity-hiking" class="d-none">Hiking at more than 2000m above sea level (for example: Mount Lome) can
+                        expose you to a daily cosmic radiation of <strong>0.230 mrem</strong> whereas at sea level (for
+                        example: in
+                        Vancouver) you are exposed to a daily radiation of just <strong>0.082 mrem</strong>.</p>
+                    <p id="note-activity-northwest" class="d-none">A person residing in the Northwest Territories is exposed to a daily
+                        radiation of <strong>0.383 mrem</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Radiation exposure across canada   -->
+<footer class="footer py-4 mt-5 bg-light">
+    <div class="container text-center">
+        <span class="text-muted">Crafted with ❤️ in the University of Alberta</span>
+    </div>
+</footer>
+
+<!-- Templates -->
+<div class="d-none template" id="edge-tooltip">
+    <div class="small">
+        <p>Bandwidth: <strong>${bandwidth}</strong></p>
+    </div>
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+<script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.js"></script>
+<script src="https://unpkg.com/leaflet-heatmap@1.0.0/leaflet-heatmap.js"></script>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.min.js"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>-->
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<script src="dist/js/data.js"></script>
+<script src="dist/js/app.js"></script>
+</body>
+</html>
