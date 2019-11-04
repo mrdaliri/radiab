@@ -11,26 +11,26 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="dist/css/app.css">
 
-    <title>Radi-AB</title>
+    <title>Radi-AB: Radiation exposure monitor for Canada</title>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Radi-AB</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" href="#">Radi-AB: <small><i>Radiation exposure monitor for Canada</i></small></a>
     </div>
 </nav>
 
 <!-- Page Content -->
 <div class="container">
     <div class="row mt-5">
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-4">
             <div class="card">
                 <div class="card-body">
+                    <button type="button" class="btn btn-primary btn-block mb-3" data-toggle="modal" data-target="#instructions">
+                        Usage Instructions
+                    </button>
+
                     <form id="map-input">
                         <select class="custom-select mb-3" id="date-picker">
                             <option selected>Select date</option>
@@ -65,16 +65,23 @@
                 <img src="dist/img/csa-logo@2x.png" class="img-fluid mt-2">
             </div>
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-9 col-md-8">
             <div class="card">
                 <div class="card-body">
                     <div id="map"></div>
+                    <div class="alert alert-info mb-0 px-2 py-1" id="map-alert">
+                        <p class="mb-0">
+                            <strong>Note:</strong> The heat map uses <a href="https://en.wikipedia.org/wiki/Rainbow#Number_of_colours_in_spectrum_or_rainbow" target="_blank">the rainbow color scale</a> in which violet indicates lowest value and red shows the highest.
+                            <br> All values are relative and compared to each other only; and not with the safe rate. Thus, <strong>red does not mean any danger at all</strong>.
+                            <br> The pins show <i>the cumulative amount of <strong>selected</strong> radiation types</i> for each city.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row mt-5 d-none" id="info">
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="card" id="iss-comparison">
                 <img src="" class="card-img-top">
                 <div class="card-body">
@@ -86,21 +93,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-4">
             <div class="alert" id="conclusion" role="alert" data-safe="0.274">
                 <p>Total radiation exposure in <strong class="city"></strong> is:</p>
-                <p class="text-center value"><strong class="value"></strong></p>
+                <p class="text-center value"><strong class="value"></strong>*</p>
                 <p>According to effective dose limit per day for the public in Canada (<strong>0.274 mrem</strong>),
                     your place is:</p>
                 <p class="text-center status"><strong class="status"></strong></p>
+                <p class="mb-0"><small>* This is an approximation.</small></p>
             </div>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-5 col-md-4">
             <div id="chart"></div>
         </div>
     </div>
     <div class="row mt-5">
-        <div class="col-lg-6">
+        <div class="col-md-6">
             <h4 class="mb-3 pt-3">Are you going to do any of these activities?</h4>
             <form>
                 <div class="form-group">
@@ -138,23 +146,23 @@
                 </div>
             </form>
         </div>
-        <div class="col-lg-5 offset-md-1">
+        <div class="col-md-5 offset-md-1">
             <div class="card" id="notes">
                 <div class="card-body">
                     <h5 class="mb-3">Notes</h5>
                     <p class="empty">Fortunately, you are not exposed to other types of radiations.</p>
-                    <p id="note-activity-flight" class="d-none">When you take a cross Canadian flight you're exposed to <strong>2
+                    <p id="note-activity-flight" class="d-none">When you take a cross Canadian flight you're exposed to about <strong>2
                         mrem</strong> of cosmic radiations!</p>
-                    <p id="note-activity-xray" class="d-none">Your lungs are exposed to a <strong>10 mrem</strong> radiation when you
+                    <p id="note-activity-xray" class="d-none">Your lungs are exposed to about <strong>10 mrem</strong> radiation when you
                         take a chest x-ray.</p>
-                    <p id="note-activity-ctscan" class="d-none">When you take an abdominal CT scan, your stomach is exposed to a
+                    <p id="note-activity-ctscan" class="d-none">When you take an abdominal CT scan, your stomach is exposed to approximately
                         <strong>1000 mrem</strong> radiation.</p>
                     <p id="note-activity-hiking" class="d-none">Hiking at more than 2000m above sea level (for example: Mount Lorne) can
-                        expose you to a daily cosmic radiation of <strong>0.230 mrem</strong> whereas at sea level (for
+                        expose you to a daily cosmic radiation of about <strong>0.230 mrem</strong> whereas at sea level (for
                         example: in
                         Vancouver) you are exposed to a daily radiation of just <strong>0.082 mrem</strong>.</p>
                     <p id="note-activity-northwest" class="d-none">A person residing in the Northwest Territories is exposed to a daily
-                        radiation of <strong>0.383 mrem</strong>.</p>
+                        radiation of about <strong>0.383 mrem</strong>.</p>
                 </div>
             </div>
         </div>
@@ -163,9 +171,37 @@
 <!-- Radiation exposure across canada   -->
 <footer class="footer py-4 mt-5 bg-light">
     <div class="container text-center">
-        <span class="text-muted">Crafted with ❤️ in the University of Alberta</span>
+        <p class="text-muted mb-1">Crafted with ❤️ in the University of Alberta</p>
+        <p class="text-muted mb-1">Data provided by <a href="http://www.asc-csa.gc.ca/" target="_blank">Canadian Space Agency</a> and is available <a href="data.zip" target="_blank">online</a>.</p>
+        <p class="text-muted mb-0">Information on radiation levels and sources obtained from <a target="_blank" href="https://nuclearsafety.gc.ca/eng/resources/radiation/introduction-to-radiation/radiation-doses.cfm">Canadian Nuclear Safety Commission website</a>.</p>
     </div>
 </footer>
+
+<div class="modal fade" id="instructions" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">How to use the Radi-AB?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Using the website is quite easy. Just follow these steps:</p>
+                <ol class="mb-0">
+                    <li>Select a date from the drop-down menu.</li>
+                    <li>If you want to get more detail of a particular city, select the city by clicking on the city pin on the map.</li>
+                    <li>You can click the radio button on the left side of the map to remove some types of radiation.</li>
+                    <li>There will be a pie chart showing different types of natural radiations resident of that city was exposed on that particular date. Along with that neutronic radiation level on ISS will also be available.</li>
+                    <li>You can select some checkboxes under the heading ‘Are you going to do any of these activities?’, and the pie chart will update accordingly to let you know what will be radiation increment by doing the options selected.</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Got it</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -181,9 +217,6 @@
 <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 <script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.js"></script>
 <script src="https://unpkg.com/leaflet-heatmap@1.0.0/leaflet-heatmap.js"></script>
-
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.min.js"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>-->
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 

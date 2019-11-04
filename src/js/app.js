@@ -188,4 +188,15 @@ $(function () {
             updateStatus();
         }
     });
+
+    let hideInstructions = localStorage && localStorage.getItem('instructions_closed');
+    let instructionsModal = $('#instructions');
+    if (!hideInstructions) {
+        instructionsModal.modal('show');
+    }
+    instructionsModal.on('hide.bs.modal', function () {
+        if (localStorage) {
+            localStorage.setItem('instructions_closed', true);
+        }
+    });
 });

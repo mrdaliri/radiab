@@ -1,5 +1,11 @@
 #map {
-  height: 350px; }
+  height: 350px;
+  border-radius: .25rem .25rem 0 0; }
+
+#map-alert {
+  font-size: 80%;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0; }
 
 #chart {
   width: 100%;
@@ -19,8 +25,10 @@
     background: rgba(0, 0, 0, 0.5); }
 
 #conclusion {
-  min-height: 265px;
   margin-bottom: 0; }
+  @media (min-width: 768px) {
+    #conclusion {
+      min-height: 265px; } }
   #conclusion p {
     margin-bottom: 0.5em; }
   #conclusion p.value {

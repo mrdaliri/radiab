@@ -1,5 +1,12 @@
 #map {
     height: 350px;
+    border-radius: .25rem .25rem 0 0;
+}
+
+#map-alert {
+    font-size: 80%;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 
 $middle-height: 265px;
@@ -28,7 +35,9 @@ $middle-height: 265px;
 }
 
 #conclusion {
-    min-height: $middle-height;
+    @media (min-width: 768px) {
+        min-height: $middle-height;
+    }
     margin-bottom: 0;
 
     p {
